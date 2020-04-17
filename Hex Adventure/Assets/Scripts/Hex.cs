@@ -32,13 +32,13 @@ public static class HexDirectionExtensions
 
 public static class Hex
 {
-// Hex
-	public const float outerRadius = 10f;
-	public const float innerRadius = outerRadius * 0.866025f;
+    // Hex
+    public const float outerRadius = 10f;
+    public const float innerRadius = outerRadius * 0.866025f;
 
     public const float solidFactor = 0.75f;
     public const float blendFactor = 1f - solidFactor;
-    public const float elevationStep = 5f;
+    public const float elevationStep = 3f;
 
     public static Texture2D noiseSource;
 
@@ -73,12 +73,12 @@ public static class Hex
         return points[(int)dir + 1] * solidFactor;
     }
 
-    public static Vector3 GetBridge (HexDirection dir)
+    public static Vector3 GetBridge(HexDirection dir)
     {
-        return (points[(int) dir] + points[(int) dir + 1]) * blendFactor;
+        return (points[(int)dir] + points[(int)dir + 1]) * blendFactor;
     }
 
-// Elevation
+    // Elevation
     public const int terracesPerSlope = 2;
     public const int terracesSteps = terracesPerSlope * 2 + 1;
 
@@ -90,20 +90,20 @@ public static class Hex
         float h = step * horizontalTerraceStepSize;
         a.x += (b.x - a.x) * h;
         a.z += (b.z - a.z) * h;
-        
+
         float v = ((step + 1) / 2) * Hex.verticalTerraceStepSize;
         a.y += (b.y - a.y) * v;
 
         return a;
     }
 
-    public static Color TerraceColorLerp (Color a, Color b, int step)
+    public static Color TerraceColorLerp(Color a, Color b, int step)
     {
         float h = step * Hex.horizontalTerraceStepSize;
         return Color.Lerp(a, b, h);
     }
 
-    public static HexEdgeType GetEdgeType (int elevation1, int elevation2)
+    public static HexEdgeType GetEdgeType(int elevation1, int elevation2)
     {
         if (elevation1 == elevation2)
             return HexEdgeType.Flat;
@@ -115,10 +115,10 @@ public static class Hex
             return HexEdgeType.Cliff;
     }
 
-// Noise Sample 
+    // Noise Sample 
     public const float perturbStrength = 5f;
-    public const float noiseScale = 0.003f;
-    public const float elevationPerturbStrength = 1.5f;
+    public const float noiseScale = 0.0015f;
+    public const float elevationPerturbStrength = 3f;
 
     public static Vector4 SampleNoise(Vector3 position)
     {
@@ -126,4 +126,8 @@ public static class Hex
             position.x * noiseScale,
             position.z * noiseScale);
     }
+
+    // Larger Map
+    public static int chunkSizeX = 5;
+    public static int chunkSizeZ = 5;
 }

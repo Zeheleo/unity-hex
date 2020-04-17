@@ -36,9 +36,8 @@ public class HexMapEditor : MonoBehaviour
 
     private void EditCell(HexCell hexCell)
     {
-        hexCell.color = activeColor;
+        hexCell.Color = activeColor;    
         hexCell.Elevation = activeElevation;
-        hexGrid.Refresh();
     }
 
     public void SelectColor (int index)
