@@ -86,6 +86,22 @@ public class HexGrid : MonoBehaviour
         return hexCells[index];
     }
 
+    public HexCell GetCell(HexCoordinates coordinate)
+    {
+        int z = coordinate.Z;
+        if(z < 0 || z >= cellCountZ)
+        {
+            return null;
+        }
+        int x = coordinate.X + z / 2;
+        if (x < 0 || x >= cellCountX)
+        {
+            return null;
+        }
+
+        return hexCells[x + z * cellCountX];
+    }
+
     void CreateCell(int x, int z, int count)
     {
         Vector3 position;
@@ -148,5 +164,13 @@ public class HexGrid : MonoBehaviour
         int localX = x - chunkX * Hex.chunkSizeX;
         int localZ = z - chunkZ * Hex.chunkSizeZ;
         chunk.AddCell(localX + localZ * Hex.chunkSizeX, cell);
+    }
+
+    public void ShowUI(bool visible)
+    {
+        for (int count = 0; count < chunks.Length; count++)
+        {
+            chunks[count].ShowUI(visible);
+        }
     }
 }

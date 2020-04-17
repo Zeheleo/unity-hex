@@ -12,6 +12,8 @@ public class HexGridChunk : MonoBehaviour
         gridCanvas = GetComponentInChildren<Canvas>();
         hexMesh = GetComponentInChildren<HexMesh>();
         hexCells = new HexCell[Hex.chunkSizeX * Hex.chunkSizeZ];
+
+        ShowUI(false);
     }
 
     public void Refresh()
@@ -32,5 +34,10 @@ public class HexGridChunk : MonoBehaviour
         cell.parentChunk = this;
         cell.transform.SetParent(transform, false);
         cell.uiRect.SetParent(gridCanvas.transform, false);
+    }
+
+    public void ShowUI(bool visible)
+    {
+        gridCanvas.gameObject.SetActive(visible);
     }
 }
