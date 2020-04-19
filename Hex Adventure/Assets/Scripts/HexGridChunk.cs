@@ -7,6 +7,8 @@ public class HexGridChunk : MonoBehaviour
     HexMesh hexMesh;
     Canvas gridCanvas;
 
+    // public HexMesh terrain;
+
     private void Awake()
     {
         gridCanvas = GetComponentInChildren<Canvas>();

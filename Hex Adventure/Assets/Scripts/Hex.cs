@@ -33,8 +33,11 @@ public static class HexDirectionExtensions
 public static class Hex
 {
     // Hex
+    public const float outerToInner = 0.866025f;
+    public const float innerToOuter = 1f / outerToInner;
+
     public const float outerRadius = 10f;
-    public const float innerRadius = outerRadius * 0.866025f;
+    public const float innerRadius = outerRadius * innerToOuter;
 
     public const float solidFactor = 0.75f;
     public const float blendFactor = 1f - solidFactor;
@@ -116,7 +119,15 @@ public static class Hex
     }
 
     // Noise Sample 
-    public const float perturbStrength = 5f;
+    public static Vector3 Perturb(Vector3 position)
+    {
+        Vector4 sample = SampleNoise(position);
+        position.x += (sample.x * 2f - 1f) * perturbStrength;
+        position.z += (sample.z * 2f - 1f) * perturbStrength;
+        return position;
+    }
+
+    public const float perturbStrength = 0f; // 5f;
     public const float noiseScale = 0.0015f;
     public const float elevationPerturbStrength = 3f;
 
@@ -130,4 +141,12 @@ public static class Hex
     // Larger Map
     public static int chunkSizeX = 5;
     public static int chunkSizeZ = 5;
+
+    // River
+    public const float streamBedElevationOffSet = -1f;
+
+    public static Vector3 GetSolidEdgeMiddle(HexDirection dir)
+    {
+        return (points[(int)dir] + points[(int)dir + 1]) * (0.5f * solidFactor);
+    }
 }

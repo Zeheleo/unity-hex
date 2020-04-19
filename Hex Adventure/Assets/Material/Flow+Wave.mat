@@ -80,7 +80,7 @@ Material:
     - _SpecularHighlights: 1
     - _Speed: 0.55
     - _SrcBlend: 1
-    - _Tiling: 0.1
+    - _Tiling: 0.5
     - _TilingModulated: 5
     - _UVSec: 0
     - _WaterFogDensity: 0.15
