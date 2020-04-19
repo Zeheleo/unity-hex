@@ -3515,7 +3515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chunkCountX: 4
   chunkCountZ: 3
-  chunkPrefab: {fileID: 114225388540536872, guid: 78fb20a9b0be7a34cb023e0589c19caf,
+  chunkPrefab: {fileID: 114977828037121404, guid: e525f81d12b40a34b9cdd8567454e631,
     type: 2}
   cellPrefab: {fileID: 114964087011416698, guid: 744d4b8639023844893d5ee2b06d5058,
     type: 2}
