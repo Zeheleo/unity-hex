@@ -5,7 +5,7 @@ public class HexGridChunk : MonoBehaviour
 {
     HexCell[] hexCells;
     Canvas gridCanvas;
-    public HexMesh terrain;
+    public HexMesh terrain, rivers;
 
     private void Awake()
     {
@@ -44,6 +44,7 @@ public class HexGridChunk : MonoBehaviour
     public void Triangulate()
     {
         terrain.Clear();
+        rivers.Clear();
 
         for (int count = 0; count < hexCells.Length; count++)
         {
@@ -51,6 +52,7 @@ public class HexGridChunk : MonoBehaviour
         }
 
         terrain.Apply();
+        rivers.Apply();
     }
 
     void Triangulate(HexCell hexCell)
@@ -431,6 +433,9 @@ public class HexGridChunk : MonoBehaviour
         terrain.AddQuadColor(hexCell.color);
         terrain.AddTriangle(centerR, m.v4, m.v5);
         terrain.AddTriangleColor(hexCell.color);
+
+        TriangulateRiverQuad(centerL, centerR, m.v2, m.v4, hexCell.RiverSurfaceY);
+        TriangulateRiverQuad(m.v2, m.v4, e.v2, e.v4, hexCell.RiverSurfaceY);
     }
 
     void TriangulateWithRiverBeginOrEnd(HexDirection dir, HexCell hexCell, Vector3 center, EdgeVertices e)
@@ -476,5 +481,10 @@ public class HexGridChunk : MonoBehaviour
         TriangulateEdgeFan(center, m, hexCell.Color);
     }
 
-
+    void TriangulateRiverQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, float y)
+    {
+        v1.y = v2.y = v3.y = v4.y = y;
+        rivers.AddQuad(v1, v2, v3, v4);
+        rivers.AddQuadUV(0f, 1f, 0f, 1f);
+    }
 }

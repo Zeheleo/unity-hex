@@ -144,6 +144,7 @@ public static class Hex
 
     // River
     public const float streamBedElevationOffSet = -1f;
+    public const float riverSurfaceElevationOffset = -0.5f;
 
     public static Vector3 GetSolidEdgeMiddle(HexDirection dir)
     {
