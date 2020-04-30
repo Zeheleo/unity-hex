@@ -10,7 +10,7 @@ public class HexMapEditor : MonoBehaviour
     private Color activeColor;
     private int activeElevation;
     private bool applyColor;
-    private bool applyElevation = true;
+    private bool applyElevation = false;
     private int brushSize;
 
     private bool isDrag;
@@ -199,7 +199,7 @@ public class HexMapEditor : MonoBehaviour
 
 // Water Edit
     int activeWaterLevel;
-    bool applyWaterLevel = true;
+    bool applyWaterLevel = false;
 
     public void SetApplyWaterLevel(bool toggle)
     {
