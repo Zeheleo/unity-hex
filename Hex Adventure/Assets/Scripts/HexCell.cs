@@ -267,7 +267,7 @@ public class HexCell : MonoBehaviour
         get
         {
             return
-                (elevation + Hex.riverSurfaceElevationOffset) * Hex.elevationStep;
+                (elevation + Hex.waterElevationSurface) * Hex.elevationStep;
         }
     }
 
@@ -336,4 +336,46 @@ public class HexCell : MonoBehaviour
             return hasIncomingRiver ? incomingRiver : outgoingRiver;
         }
     }
+
+// Water
+    public int WaterLevel
+    {
+        get
+        {
+            return WaterLevel;
+        }
+
+        set
+        {
+            if (waterLevel == value)
+                return;
+
+            waterLevel = value;
+
+            // TODO : Enforce certain terrain
+            Refresh();
+        }
+    }
+
+    public bool IsUnderwater
+    {
+        get
+        {
+            return waterLevel > elevation;
+        }
+    }
+
+    public float WaterSurfaceY
+    {
+        get
+        {
+            return
+                (waterLevel + Hex.waterElevationSurface) * Hex.elevationStep;
+        }
+    }
+
+    int waterLevel;
+    
+
+
 };

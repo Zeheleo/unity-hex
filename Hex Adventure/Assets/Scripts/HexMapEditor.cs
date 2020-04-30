@@ -126,6 +126,11 @@ public class HexMapEditor : MonoBehaviour
                 hexCell.RemoveRoads();
             }
 
+            if(applyWaterLevel)
+            {
+                hexCell.WaterLevel = activeWaterLevel;
+            }
+
             if(isDrag)
             {
                 HexCell otherCell = hexCell.GetNeighbor(dragDirection.Opposite());
@@ -190,5 +195,19 @@ public class HexMapEditor : MonoBehaviour
     public void SetRoadMode(int mode)
     {
         roadMode = (OptionalToggle)mode;
+    }
+
+// Water Edit
+    int activeWaterLevel;
+    bool applyWaterLevel = true;
+
+    public void SetApplyWaterLevel(bool toggle)
+    {
+        applyWaterLevel = toggle;
+    }
+
+    public void SetWaterLevel(float value)
+    {
+        activeWaterLevel = (int)value;
     }
 }
