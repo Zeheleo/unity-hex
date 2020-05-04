@@ -8,7 +8,7 @@ public class HexCell : MonoBehaviour
     public Color color;
     public RectTransform uiRect;
 
-    private int elevation = int.MinValue;
+    private int elevation = -10;
 
     [SerializeField]
     HexCell[] neighbors;
@@ -232,7 +232,8 @@ public class HexCell : MonoBehaviour
         HexCell neighbor = GetNeighbor(dir);
 
         // No neighbor cases + uphill flow
-        if(!neighbor || elevation < neighbor.elevation)
+        // if(!neighbor || elevation < neighbor.elevation)
+        if(!isValidRiverDestination(neighbor))
         {
             return;
         }
@@ -342,7 +343,7 @@ public class HexCell : MonoBehaviour
     {
         get
         {
-            return WaterLevel;
+            return waterLevel;
         }
 
         set
@@ -375,7 +376,9 @@ public class HexCell : MonoBehaviour
     }
 
     int waterLevel;
-    
 
-
+    bool isValidRiverDestination(HexCell neighbor)
+    {
+        return neighbor && (elevation >= neighbor.elevation || waterLevel == neighbor.elevation);
+    }
 };

@@ -198,7 +198,7 @@ public class HexMapEditor : MonoBehaviour
     }
 
 // Water Edit
-    int activeWaterLevel;
+    int activeWaterLevel = 1;
     bool applyWaterLevel = false;
 
     public void SetApplyWaterLevel(bool toggle)

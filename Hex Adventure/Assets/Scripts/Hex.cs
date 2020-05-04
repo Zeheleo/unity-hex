@@ -127,7 +127,7 @@ public static class Hex
         return position;
     }
 
-    public const float perturbStrength = 0f; // 5f;
+    public const float perturbStrength = 1f; // 5f;
     public const float noiseScale = 0.0015f;
     public const float elevationPerturbStrength = 3f;
 
@@ -149,5 +149,25 @@ public static class Hex
     public static Vector3 GetSolidEdgeMiddle(HexDirection dir)
     {
         return (points[(int)dir] + points[(int)dir + 1]) * (0.5f * solidFactor);
+    }
+
+    // Shore
+    public const float waterFactor = 0.6f;
+
+    public static Vector3 GetFirstWaterPoint(HexDirection dir)
+    {
+        return points[(int)dir] * waterFactor;
+    }
+
+    public static Vector3 GetSecondWaterPoint(HexDirection dir)
+    {
+        return points[(int)dir + 1] * waterFactor;
+    }
+
+    public const float waterBlendFactor = 1f - waterFactor;
+
+    public static Vector3 GetWaterBridge(HexDirection dir)
+    {
+        return (points[(int)dir] + points[(int)dir + 1]) * waterBlendFactor;
     }
 }
