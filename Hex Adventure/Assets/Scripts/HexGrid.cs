@@ -20,12 +20,17 @@ public class HexGrid : MonoBehaviour
 
     private void OnEnable()
     {
-        Hex.noiseSource = noiseSource;
+        if (!Hex.noiseSource)
+        {
+            Hex.noiseSource = noiseSource;
+            Hex.InitializeHashGrid(seed);
+        }
     }
 
     private void Awake()
     {
         Hex.noiseSource = noiseSource;
+        Hex.InitializeHashGrid(seed);
 
         cellCountX = chunkCountX * Hex.chunkSizeX;
         cellCountZ = chunkCountZ * Hex.chunkSizeZ;
@@ -173,4 +178,7 @@ public class HexGrid : MonoBehaviour
             chunks[count].ShowUI(visible);
         }
     }
+
+    // Features
+    public int seed;
 }

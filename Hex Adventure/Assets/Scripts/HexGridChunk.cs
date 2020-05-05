@@ -6,6 +6,7 @@ public class HexGridChunk : MonoBehaviour
     HexCell[] hexCells;
     Canvas gridCanvas;
     public HexMesh terrain, rivers, roads, water, waterShore, estuaries;
+    public HexFeatureManager features;
 
     private void Awake()
     {
@@ -49,7 +50,8 @@ public class HexGridChunk : MonoBehaviour
         water.Clear();
         waterShore.Clear();
         estuaries.Clear();
-
+        features.Clear();
+        
         for (int count = 0; count < hexCells.Length; count++)
         {
             Triangulate(hexCells[count]);
@@ -61,6 +63,7 @@ public class HexGridChunk : MonoBehaviour
         water.Apply();
         waterShore.Apply();
         estuaries.Apply();
+        features.Apply();
     }
 
     void Triangulate(HexCell hexCell)
@@ -68,6 +71,11 @@ public class HexGridChunk : MonoBehaviour
         for (HexDirection dir = HexDirection.TopRight; dir <= HexDirection.TopLeft; dir++)
         {
             Triangulate(dir, hexCell);
+        }
+
+        if (!hexCell.IsUnderwater && !hexCell.HasRiver && !hexCell.HasRoads)
+        {
+            features.AddFeature(hexCell, hexCell.Position);
         }
     }
 
@@ -102,6 +110,11 @@ public class HexGridChunk : MonoBehaviour
         {
             // TriangulateEdgeFan(center, e, hexCell.color);
             TriangulateWithoutRiver(dir, hexCell, center, e);
+
+            if(!hexCell.IsUnderwater && !hexCell.HasRoadThroughEdge(dir))
+            {
+                features.AddFeature(hexCell, (center + e.v1 + e.v5) * (1f / 3f));
+            }
         }
 
         if (hexCell.IsUnderwater)
@@ -550,6 +563,11 @@ public class HexGridChunk : MonoBehaviour
 
         TriangulateEdgeStrip(m, hexCell.Color, e, hexCell.Color);
         TriangulateEdgeFan(center, m, hexCell.Color);
+
+        if(!hexCell.IsUnderwater && !hexCell.HasRoadThroughEdge(dir))
+        {
+            features.AddFeature(hexCell, ((center + e.v1 + e.v5) * (1f / 3f)));
+        }
     }
 
     void TriangulateRiverQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, float y1, float y2, float v, bool reversed)

@@ -381,4 +381,40 @@ public class HexCell : MonoBehaviour
     {
         return neighbor && (elevation >= neighbor.elevation || waterLevel == neighbor.elevation);
     }
+
+    int _TreeLevel;
+
+    public int TreeLevel
+    {
+        get
+        {
+            return _TreeLevel;
+        }
+
+        set
+        {
+            if (_TreeLevel != value)
+                _TreeLevel = value;
+
+            RefreshSelf();
+        }
+    }
+
+    int _StoneLevel;
+
+    public int StoneLevel
+    {
+        get
+        {
+            return _StoneLevel;
+        }
+
+        set
+        {
+            if (_StoneLevel != value)
+                _StoneLevel = value;
+
+            RefreshSelf();
+        }
+    }
 };

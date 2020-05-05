@@ -30,6 +30,21 @@ public static class HexDirectionExtensions
     }
 }
 
+public struct HexHash
+{
+    public float a, b, c, d, e;
+    public static HexHash Create()
+    {
+        HexHash hash;
+        hash.a = Random.value * 0.999f;
+        hash.b = Random.value * 0.999f;
+        hash.c = Random.value * 0.999f;
+        hash.d = Random.value * 0.999f;
+        hash.e = Random.value * 0.999f;
+        return hash;
+    }
+}
+
 public static class Hex
 {
     // Hex
@@ -169,5 +184,54 @@ public static class Hex
     public static Vector3 GetWaterBridge(HexDirection dir)
     {
         return (points[(int)dir] + points[(int)dir + 1]) * waterBlendFactor;
+    }
+
+    // Tree
+    public const int hashGridSize = 256;
+    public const float hashGridScale = 0.25f;
+
+
+    static HexHash[] hashGrid;
+
+    public static void InitializeHashGrid(int seed)
+    {
+        hashGrid = new HexHash[hashGridSize * hashGridSize];
+
+        Random.State currentState = Random.state;
+        Random.InitState(seed);
+        for (int count = 0; count < hashGrid.Length; count++)
+        {
+            hashGrid[count] = HexHash.Create();
+        }
+        Random.state = currentState;
+    }
+
+    public static HexHash SampleHashGrid(Vector3 position)
+    {
+        int x = (int)(position.x * hashGridScale) % hashGridSize;
+        if (x < 0)
+        {
+            x += hashGridSize;
+        }
+
+        int z = (int)(position.z * hashGridScale) % hashGridSize;
+        if (z < 0)
+        {
+            z += hashGridSize;
+        }
+
+        return hashGrid[x + z * hashGridSize];
+    }
+
+    static float[][] propThresholds =
+    {
+        new float[] {0.0f, 0.0f, 0.4f},
+        new float[] {0.0f, 0.4f, 0.6f},
+        new float[] {0.4f, 0.6f, 0.8f}
+    };
+
+    public static float[] GetPropThresholds (int level)
+    {
+        return propThresholds[level];
     }
 }

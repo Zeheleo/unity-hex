@@ -131,6 +131,16 @@ public class HexMapEditor : MonoBehaviour
                 hexCell.WaterLevel = activeWaterLevel;
             }
 
+            if(applyTreeLevel)
+            {
+                hexCell.TreeLevel = activeTreeLevel;
+            }
+
+            if(applyStoneLevel)
+            {
+                hexCell.StoneLevel = activeStoneLevel;
+            }
+
             if(isDrag)
             {
                 HexCell otherCell = hexCell.GetNeighbor(dragDirection.Opposite());
@@ -209,5 +219,33 @@ public class HexMapEditor : MonoBehaviour
     public void SetWaterLevel(float value)
     {
         activeWaterLevel = (int)value;
+    }
+
+    // Tree Edit
+    int activeTreeLevel;
+    bool applyTreeLevel;
+
+    public void SetApplyTreeLevel(bool toggle)
+    {
+        applyTreeLevel = toggle;
+    }
+
+    public void SetTreeLevel(float level)
+    {
+        activeTreeLevel = (int)level;
+    }
+
+    // Stone Edit
+    int activeStoneLevel;
+    bool applyStoneLevel;
+
+    public void SetApplyStoneLevel(bool toggle)
+    {
+        applyStoneLevel = toggle;
+    }
+
+    public void SetStoneLevel(float level)
+    {
+        activeStoneLevel = (int)level;
     }
 }

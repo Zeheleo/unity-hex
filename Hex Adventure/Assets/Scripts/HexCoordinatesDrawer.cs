@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+
+#if UNITY_EDITOR    
 using UnityEditor;
 
 [CustomPropertyDrawer(typeof(HexCoordinates))]
@@ -16,3 +18,4 @@ public class HexCoordinatesDrawer : PropertyDrawer
         GUI.Label(position, coordinates.ToStringOnSingleLine());
     }
 }
+#endif
