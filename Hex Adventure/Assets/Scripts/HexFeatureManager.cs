@@ -35,10 +35,7 @@ public class HexFeatureManager : MonoBehaviour
     }
 
     public void AddFeature(HexCell hexCell, Vector3 position)
-    {
-        // Placeholder
-        bool isStone = false;
-
+    {        
         HexHash hash = Hex.SampleHashGrid(position);
         Transform prefab = PickPrefab(treeCollections, hexCell.TreeLevel, hash.a, hash.d);
         Transform otherPrefab = PickPrefab(stoneCollection, hexCell.StoneLevel, hash.b, hash.d);
@@ -48,13 +45,11 @@ public class HexFeatureManager : MonoBehaviour
             if(otherPrefab && hash.b < hash.a)
             {
                 prefab = otherPrefab;
-                isStone = true;
             }
         }
         else if(otherPrefab)
         {
             prefab = otherPrefab;
-            isStone = true;
         }
         else
         {
@@ -65,14 +60,16 @@ public class HexFeatureManager : MonoBehaviour
 
         Vector3 result = Hex.Perturb(position);        
 
-        if(!isStone)
+        /*
+         *if(!isStone)
             result.y += 3f;
+            */
         //float offset = 0.5f;
         //result.x += offset;
         //result.z += offset;
 
         instance.localPosition = result;
-        instance.localRotation = Quaternion.Euler(-90f, 360f * hash.e, 0f);
+        instance.localRotation = Quaternion.Euler(0f, 360f * hash.e, 0f);
         instance.SetParent(container, false);
     }
 
