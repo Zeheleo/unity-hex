@@ -123,3 +123,4 @@ MonoBehaviour:
   - {fileID: 0}
   parentChunk: {fileID: 0}
   roads: 000000000000
+  walls: 000000000000

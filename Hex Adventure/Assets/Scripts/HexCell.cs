@@ -382,6 +382,7 @@ public class HexCell : MonoBehaviour
         return neighbor && (elevation >= neighbor.elevation || waterLevel == neighbor.elevation);
     }
 
+// Prop Features
     int _TreeLevel;
 
     public int TreeLevel
@@ -417,4 +418,72 @@ public class HexCell : MonoBehaviour
             RefreshSelf();
         }
     }
+
+    // Wall
+    [SerializeField]
+    bool[] walls;
+
+    public bool HasWallThroughEdge(HexDirection dir)
+    {
+        return walls[(int)dir];
+    }
+
+    public void AddWall(HexDirection dir)
+    {
+        if (!walls[(int)dir]) // && !HasRiverThroughEdge(dir) && GetElevationDifference(dir) <= 1)
+        {
+            SetWall((int)dir, true);
+        }
+    }
+
+    public void SetWall(int index, bool state)
+    {
+        walls[index] = state;
+        neighbors[index].walls[(int)((HexDirection)index).Opposite()] = state;
+        neighbors[index].RefreshSelf();
+        RefreshSelf();
+    }
+
+    public void RemoveWalls(HexDirection dir)
+    {
+        //for (int count = 0; count < walls.Length; count++)
+        //{
+        //    if (walls[count])
+        //    {
+        //        SetWall(count, false);
+        //    }
+        //}
+        if(walls[(int)dir])
+        {
+            SetWall((int)dir, false);
+        }
+    }
+    /*
+    public bool hasWall(HexDirection dir)
+    {
+        for()
+
+        return false;
+    }
+    */
+
+    /*
+    bool _IsWall;
+
+    public bool IsWall
+    {
+        get
+        {
+            return _IsWall;
+        }
+
+        set
+        {
+            if (_IsWall != value)
+            {
+                _IsWall = value;
+                Refresh();
+            }
+        }
+    }*/
 };

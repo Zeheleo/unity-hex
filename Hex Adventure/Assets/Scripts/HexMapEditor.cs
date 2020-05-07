@@ -156,6 +156,15 @@ public class HexMapEditor : MonoBehaviour
                     {
                         otherCell.AddRoad(dragDirection);
                     }
+
+                    if (wallMode == OptionalToggle.Yes)
+                    {
+                        hexCell.AddWall(dragDirection);                        
+                    }
+                    else if(wallMode == OptionalToggle.No)
+                    {
+                        hexCell.RemoveWalls(dragDirection);
+                    }
                 }
             }
         }
@@ -247,5 +256,13 @@ public class HexMapEditor : MonoBehaviour
     public void SetStoneLevel(float level)
     {
         activeStoneLevel = (int)level;
+    }
+
+    // Wall Edit
+    OptionalToggle wallMode;
+
+    public void SetWallMode(int mode)
+    {
+        wallMode = (OptionalToggle)mode;
     }
 }

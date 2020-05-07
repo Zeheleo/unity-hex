@@ -181,8 +181,15 @@ public class HexGridChunk : MonoBehaviour
             TriangulateEdgeStrip(e1, hexCell.color, e2, neighbor.color, hexCell.HasRoadThroughEdge(dir));
         }
 
+        // Wall Creation
+        if (hexCell.HasWallThroughEdge(dir) == true)
+        {
+            features.AddWall(e1, hexCell, e2, neighbor, dir);
+        }
+
         HexCell nextNeighbor = hexCell.GetNeighbor(dir.Next());
-        if (dir <= HexDirection.Left && nextNeighbor != null)
+        // Direction Optimization
+        if (dir <= HexDirection.Right && nextNeighbor != null)
         {
             Vector3 elevationVector = e1.v5 + Hex.GetBridge(dir.Next());
             elevationVector.y = nextNeighbor.Position.y;
