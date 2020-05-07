@@ -159,11 +159,11 @@ public class HexMapEditor : MonoBehaviour
 
                     if (wallMode == OptionalToggle.Yes)
                     {
-                        hexCell.AddWall(dragDirection);                        
+                        otherCell.AddWall(dragDirection);                        
                     }
                     else if(wallMode == OptionalToggle.No)
                     {
-                        hexCell.RemoveWalls(dragDirection);
+                        otherCell.RemoveWalls(dragDirection);
                     }
                 }
             }
