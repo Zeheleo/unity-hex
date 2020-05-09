@@ -17,6 +17,7 @@ public class HexFeatureManager : MonoBehaviour
     // public Transform[][] propPrefabs;
     public HexPropCollection[] treeCollections, stoneCollection;
     public Transform walls;
+    public Transform wallDoors;
 
     private Transform container;
 
@@ -96,7 +97,7 @@ public class HexFeatureManager : MonoBehaviour
     {
         // In-out doesnt matter, only their state is diff
         if (Mathf.Abs(nearCell.Elevation - farCell.Elevation) <= 1 &&
-            !nearCell.IsUnderwater && !farCell.IsUnderwater)
+            !nearCell.IsUnderwater && !farCell.IsUnderwater && !nearCell.HasRoadThroughEdge(dir))
         {
             // nearLeft, farLeft, nearRight, farRight
             // near.v1; far.v1; near.v5; far.v5;
@@ -132,6 +133,36 @@ public class HexFeatureManager : MonoBehaviour
         {
             // Make it false
             // nearCell.SetWall()
+        }
+
+        if(nearCell.HasRoadThroughEdge(dir))
+        {
+            Vector3 left = Vector3.Lerp(near.v1, far.v1, 0.5f);
+            Vector3 right = Vector3.Lerp(near.v5, far.v5, 0.5f);
+
+            Transform instanceLeft = Instantiate(wallDoors);
+            Transform instanceRight = Instantiate(wallDoors);
+            instanceLeft.localPosition = left;
+            instanceRight.localPosition = right;
+
+            if (dir == HexDirection.TopRight || dir == HexDirection.DownLeft)
+            {
+                instanceLeft.localRotation = Quaternion.Euler(0f, 25f, 0f);
+                instanceRight.localRotation = Quaternion.Euler(0f, 205f, 0f);
+            }
+            else if (dir == HexDirection.Right || dir == HexDirection.Left)
+            {
+                instanceLeft.localRotation = Quaternion.Euler(0f, 90f, 0f);
+                instanceRight.localRotation = Quaternion.Euler(0f, 270f, 0f);
+            }
+            else // DownRight - DownLeft
+            {
+                instanceLeft.localRotation = Quaternion.Euler(0f, 155f, 0f);
+                instanceRight.localRotation = Quaternion.Euler(0f, 340f, 0f);
+            }
+
+            instanceLeft.SetParent(container, false);
+            instanceRight.SetParent(container, false);
         }
     }
 }
