@@ -439,8 +439,17 @@ public class HexCell : MonoBehaviour
     public void SetWall(int index, bool state)
     {
         walls[index] = state;
-        neighbors[index].walls[(int)((HexDirection)index).Opposite()] = state;
-        neighbors[index].RefreshSelf();
+
+        if(!neighbors[index])
+        {
+            return;
+        }
+        else
+        {
+            neighbors[index].walls[(int)((HexDirection)index).Opposite()] = state;
+            neighbors[index].RefreshSelf();
+        }
+
         RefreshSelf();
     }
 

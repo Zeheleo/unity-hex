@@ -141,7 +141,25 @@ public class HexMapEditor : MonoBehaviour
                 hexCell.StoneLevel = activeStoneLevel;
             }
 
-            if(isDrag)
+
+            if (wallMode == OptionalToggle.Yes)
+            {
+                for(HexDirection dir = HexDirection.TopRight; dir <= HexDirection.TopLeft; dir++)
+                {
+                    hexCell.AddWall(dir);
+                }
+            }
+            /*
+            else if(wallMode == OptionalToggle.No)
+            {
+                for (HexDirection dir = HexDirection.TopRight; dir <= HexDirection.TopLeft; dir++)
+                {
+                    hexCell.RemoveWalls(dir);
+                }
+            }
+            */
+
+            if (isDrag)
             {
                 HexCell otherCell = hexCell.GetNeighbor(dragDirection.Opposite());
 
@@ -157,14 +175,21 @@ public class HexMapEditor : MonoBehaviour
                         otherCell.AddRoad(dragDirection);
                     }
 
-                    if (wallMode == OptionalToggle.Yes)
-                    {
-                        otherCell.AddWall(dragDirection);                        
-                    }
-                    else if(wallMode == OptionalToggle.No)
+                    if (wallMode == OptionalToggle.No)
                     {
                         otherCell.RemoveWalls(dragDirection);
                     }
+
+                    /*
+                    if (wallMode == OptionalToggle.Yes)
+                    {
+                        otherCell.AddWall(dragDirection);
+                    }
+                    else if (wallMode == OptionalToggle.No)
+                    {
+                        otherCell.RemoveWalls(dragDirection);
+                    }
+                    */
                 }
             }
         }

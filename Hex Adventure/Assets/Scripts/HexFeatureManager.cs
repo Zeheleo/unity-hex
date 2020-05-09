@@ -95,23 +95,23 @@ public class HexFeatureManager : MonoBehaviour
     public void AddWall(EdgeVertices near, HexCell nearCell, EdgeVertices far, HexCell farCell, HexDirection dir)
     {
         // In-out doesnt matter, only their state is diff
-        // if(nearCell.HasWallThroughEdge(dir) == false)      
+        if (Mathf.Abs(nearCell.Elevation - farCell.Elevation) <= 1)
         {
             // nearLeft, farLeft, nearRight, farRight
             // near.v1; far.v1; near.v5; far.v5;
 
             Vector3 left = Vector3.Lerp(near.v1, far.v1, 0.5f);
-            Vector3 right = Vector3.Lerp(near.v5, far.v5, 0.5f);
+            // Vector3 right = Vector3.Lerp(near.v5, far.v5, 0.5f);
 
             Transform instance = Instantiate(walls);
 
             instance.localPosition = left;
 
-            if(dir == HexDirection.TopRight || dir == HexDirection.DownLeft)
+            if (dir == HexDirection.TopRight || dir == HexDirection.DownLeft)
             {
                 instance.localRotation = Quaternion.Euler(0f, 25f, 0f);
             }
-            else if(dir == HexDirection.Right || dir == HexDirection.Left)
+            else if (dir == HexDirection.Right || dir == HexDirection.Left)
             {
                 instance.localRotation = Quaternion.Euler(0f, 90f, 0f);
             }
@@ -125,7 +125,12 @@ public class HexFeatureManager : MonoBehaviour
             // instance.SetParent();
             // instance.position;
             // instance.rotation;
-            
+
+        }
+        else
+        {
+            // Make it false
+            // nearCell.SetWall()
         }
     }
 }
