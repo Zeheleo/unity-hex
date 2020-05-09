@@ -95,7 +95,8 @@ public class HexFeatureManager : MonoBehaviour
     public void AddWall(EdgeVertices near, HexCell nearCell, EdgeVertices far, HexCell farCell, HexDirection dir)
     {
         // In-out doesnt matter, only their state is diff
-        if (Mathf.Abs(nearCell.Elevation - farCell.Elevation) <= 1)
+        if (Mathf.Abs(nearCell.Elevation - farCell.Elevation) <= 1 &&
+            !nearCell.IsUnderwater && !farCell.IsUnderwater)
         {
             // nearLeft, farLeft, nearRight, farRight
             // near.v1; far.v1; near.v5; far.v5;
