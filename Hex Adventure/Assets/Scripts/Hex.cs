@@ -234,4 +234,6 @@ public static class Hex
     {
         return propThresholds[level];
     }
+
+    public const float bridgeLengthStep = 7f;
 }

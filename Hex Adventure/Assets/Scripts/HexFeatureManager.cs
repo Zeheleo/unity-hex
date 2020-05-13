@@ -18,8 +18,10 @@ public class HexFeatureManager : MonoBehaviour
     public HexPropCollection[] treeCollections, stoneCollection;
     public Transform walls;
     public Transform wallDoors;
+    public Transform bridge;
 
     private Transform container;
+    
 
     public void Clear()
     {
@@ -137,6 +139,7 @@ public class HexFeatureManager : MonoBehaviour
 
         if(nearCell.HasRoadThroughEdge(dir))
         {
+            /*
             Vector3 left = Vector3.Lerp(near.v1, far.v1, 0.5f);
             Vector3 right = Vector3.Lerp(near.v5, far.v5, 0.5f);
 
@@ -163,6 +166,34 @@ public class HexFeatureManager : MonoBehaviour
 
             instanceLeft.SetParent(container, false);
             instanceRight.SetParent(container, false);
+            */
         }
+    }
+
+    public void AddBridge(Vector3 roadCenter1, Vector3 roadCenter2)
+    {
+        roadCenter1 = Hex.Perturb(roadCenter1);
+        roadCenter2 = Hex.Perturb(roadCenter2);
+
+        roadCenter1.y += 1f;
+        roadCenter2.y += 1f;
+
+        Transform instance = Instantiate(bridge);
+        instance.localPosition = (roadCenter1 + roadCenter2) * 0.5f;
+
+        // Vector3 fix = instance.localPosition.y + 0.8f;
+        // instance.localPosition = fix;
+
+        instance.forward = roadCenter2 - roadCenter1;
+
+        float length = Vector3.Distance(roadCenter1, roadCenter2);
+        instance.localScale = new Vector3(1f, 1f, length * (1f / Hex.bridgeLengthStep));
+
+        instance.SetParent(container, false);
+    }
+
+    public void AddBridgeRotate(Vector3 roadCenter1, Vector3 roadCenter2)
+    {
+        // Considerable Option
     }
 }

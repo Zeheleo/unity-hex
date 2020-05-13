@@ -700,6 +700,12 @@ public class HexGridChunk : MonoBehaviour
             }
 
             roadCenter += corner * 0.5f;
+            if (hexCell.IncomingRiver == dir.Next() &&
+                (hexCell.HasRoadThroughEdge(dir.Next().Next()) || hexCell.HasRoadThroughEdge(dir.Opposite()))
+                )
+            {
+                features.AddBridge(roadCenter, center - corner * 0.5f);
+            }
             center += corner * 0.25f;
         }
         else if(hexCell.IncomingRiver == hexCell.OutgoingRiver.Previous())
@@ -744,7 +750,12 @@ public class HexGridChunk : MonoBehaviour
                 return;
             }
 
-            roadCenter += Hex.GetSolidEdgeMiddle(middle) * 0.25f;
+            Vector3 offset = Hex.GetSolidEdgeMiddle(middle);
+            roadCenter += offset * 0.25f;
+            if (dir == middle && hexCell.HasRoadThroughEdge(dir.Opposite()))
+            {
+                features.AddBridge(roadCenter, center - offset * (Hex.innerToOuter * 0.7f));
+            }
         }
 
         Vector3 mL = Vector3.Lerp(roadCenter, e.v1, interpolators.x);
