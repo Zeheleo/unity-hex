@@ -774,3 +774,7 @@ MonoBehaviour:
   walls: {fileID: 4914756270507452, guid: 0c3423c311a899743b11d305930f618f, type: 3}
   wallDoors: {fileID: 4136298859155006, guid: 2dce7172b828e5e41b021311a05551c6, type: 3}
   bridge: {fileID: 7049233384008189953, guid: f9de2e63e9a28f040ae4f03af7816c6d, type: 3}
+  specObj:
+  - {fileID: 2497239711307870216, guid: 479aab3798485264290bd5fb64bec1e3, type: 3}
+  - {fileID: 2446895570010553930, guid: 684c05b7e3ee218408e1ba19e7bc7368, type: 3}
+  - {fileID: 3223346550049729100, guid: 6df008b72454387479a69ef2b4577dd6, type: 3}

@@ -131,6 +131,11 @@ public class HexMapEditor : MonoBehaviour
                 hexCell.WaterLevel = activeWaterLevel;
             }
 
+            if(applySpecIndex)
+            {
+                hexCell.SpecIndex = activeSpecIndex;
+            }
+
             if(applyTreeLevel)
             {
                 hexCell.TreeLevel = activeTreeLevel;
@@ -140,7 +145,6 @@ public class HexMapEditor : MonoBehaviour
             {
                 hexCell.StoneLevel = activeStoneLevel;
             }
-
 
             if (wallMode == OptionalToggle.Yes)
             {
@@ -289,5 +293,19 @@ public class HexMapEditor : MonoBehaviour
     public void SetWallMode(int mode)
     {
         wallMode = (OptionalToggle)mode;
+    }
+
+    // Spec Object edit
+    int activeSpecIndex;
+    bool applySpecIndex;
+
+    public void SetApplySpecIndex(bool toggle)
+    {
+        applySpecIndex = toggle;
+    }
+
+    public void SetSpecIndex (float index)
+    {
+        activeSpecIndex = (int)index;
     }
 }

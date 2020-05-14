@@ -77,6 +77,11 @@ public class HexGridChunk : MonoBehaviour
         {
             features.AddFeature(hexCell, hexCell.Position);
         }
+
+        if(hexCell.IsSpecial)
+        {
+            features.AddSpecialFeature(hexCell, hexCell.Position);
+        }
     }
 
     void Triangulate(HexDirection dir, HexCell hexCell)
@@ -705,6 +710,7 @@ public class HexGridChunk : MonoBehaviour
                 )
             {
                 features.AddBridge(roadCenter, center - corner * 0.5f);
+
             }
             center += corner * 0.25f;
         }

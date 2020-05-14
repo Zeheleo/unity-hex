@@ -19,9 +19,9 @@ public class HexFeatureManager : MonoBehaviour
     public Transform walls;
     public Transform wallDoors;
     public Transform bridge;
+    public Transform[] specObj;
 
     private Transform container;
-    
 
     public void Clear()
     {
@@ -195,5 +195,13 @@ public class HexFeatureManager : MonoBehaviour
     public void AddBridgeRotate(Vector3 roadCenter1, Vector3 roadCenter2)
     {
         // Considerable Option
+    }
+
+    public void AddSpecialFeature(HexCell hexCell, Vector3 position)
+    {
+        Transform instance = Instantiate(specObj[hexCell.SpecIndex - 1]);
+        instance.localPosition = Hex.Perturb(position);
+        // HexHash hash = 
+        instance.SetParent(container, false);
     }
 }

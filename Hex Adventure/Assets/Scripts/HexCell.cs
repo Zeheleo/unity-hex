@@ -274,7 +274,7 @@ public class HexCell : MonoBehaviour
 
  // Roads
     [SerializeField]
-    bool[] roads;
+    bool[] roads;   
 
     public bool HasRoadThroughEdge(HexDirection dir)
     {
@@ -495,4 +495,30 @@ public class HexCell : MonoBehaviour
             }
         }
     }*/
+
+    int _SpecIndex;
+
+    public int SpecIndex
+    {
+        get
+        {
+            return _SpecIndex;
+        }
+        set
+        {
+            if(_SpecIndex != value)
+            {
+                _SpecIndex = value;
+                RefreshSelf();
+            }
+        }
+    }
+
+    public bool IsSpecial
+    {
+        get
+        {
+            return _SpecIndex > 0;
+        }
+    }
 };
