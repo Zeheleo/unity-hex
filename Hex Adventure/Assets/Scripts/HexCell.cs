@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class HexCell : MonoBehaviour
 {
     public HexCoordinates hexCoordinates;
-    public Color color;
     public RectTransform uiRect;
+    int _terrainTypeIndex;
 
     private int elevation = -10;
 
@@ -63,16 +64,7 @@ public class HexCell : MonoBehaviour
                 return;
 
             elevation = value;
-            Vector3 position = transform.localPosition;
-            position.y = value * Hex.elevationStep;
-
-            // Perturb
-            position.y += (Hex.SampleNoise(position).y * 2f - 1f) * Hex.elevationPerturbStrength;
-            transform.localPosition = position;
-
-            Vector3 textPosition = uiRect.localPosition;
-            textPosition.z = -position.y;
-            uiRect.localPosition = textPosition;
+            RefreshElevation();
 
             if (hasOutgoingRiver &&
                 elevation < GetNeighbor(outgoingRiver).elevation)
@@ -94,20 +86,25 @@ public class HexCell : MonoBehaviour
         }
     }
 
+    void RefreshElevation()
+    {
+        Vector3 position = transform.localPosition;
+        position.y = elevation * Hex.elevationStep;
+
+        // Perturb
+        position.y += (Hex.SampleNoise(position).y * 2f - 1f) * Hex.elevationPerturbStrength;
+        transform.localPosition = position;
+
+        Vector3 textPosition = uiRect.localPosition;
+        textPosition.z = -position.y;
+        uiRect.localPosition = textPosition;
+    }
+
     public Color Color
     {
         get
         {
-            return color;
-        }
-        set
-        {
-            if(color == value)
-            {
-                return;
-            }
-            color = value;
-            Refresh();
+            return Hex.colors[_terrainTypeIndex];
         }
     }
 
@@ -247,10 +244,12 @@ public class HexCell : MonoBehaviour
 
         hasOutgoingRiver = true;
         outgoingRiver = dir;
+        SpecIndex = 0;
 
         neighbor.RemoveIncomingRiver();
         neighbor.hasIncomingRiver = true;
         neighbor.incomingRiver = dir.Opposite();
+        neighbor.SpecIndex = 0;
 
         SetRoad((int)dir, false);   
     }
@@ -506,7 +505,7 @@ public class HexCell : MonoBehaviour
         }
         set
         {
-            if(_SpecIndex != value)
+            if(_SpecIndex != value && !HasRiver)
             {
                 _SpecIndex = value;
                 RefreshSelf();
@@ -520,5 +519,64 @@ public class HexCell : MonoBehaviour
         {
             return _SpecIndex > 0;
         }
+    }
+
+    public int TerrainTypeIndex
+    {
+        get
+        {
+            return _terrainTypeIndex;
+        }
+
+        set
+        {
+            if(_terrainTypeIndex != value)
+            {
+                _terrainTypeIndex = value;
+                Refresh();
+            }
+        }
+    }
+
+    public void Save(BinaryWriter writer)
+    {
+        writer.Write(_terrainTypeIndex);
+        writer.Write(elevation);
+        writer.Write(waterLevel);
+        writer.Write(_TreeLevel);
+        writer.Write(_StoneLevel);
+        writer.Write(_SpecIndex);
+
+        writer.Write(hasIncomingRiver);
+        writer.Write((int)incomingRiver);
+        writer.Write(hasOutgoingRiver);
+        writer.Write((int)outgoingRiver);
+
+        for(int count = 0; count < walls.Length; count++)
+            writer.Write(walls[count]);
+
+        for (int count = 0; count < roads.Length; count++)
+            writer.Write(roads[count]);
+    }
+
+    public void Load(BinaryReader reader)
+    {
+        _terrainTypeIndex = reader.ReadInt32();
+        elevation = reader.ReadInt32(); RefreshElevation();
+        waterLevel = reader.ReadInt32();
+        _TreeLevel = reader.ReadInt32();
+        _StoneLevel = reader.ReadInt32();
+        _SpecIndex = reader.ReadInt32();
+        
+        hasIncomingRiver = reader.ReadBoolean();
+        incomingRiver = (HexDirection)reader.ReadInt32();
+        hasOutgoingRiver = reader.ReadBoolean();
+        outgoingRiver = (HexDirection)reader.ReadInt32();
+
+        for (int count = 0; count < walls.Length; count++)
+            walls[count] = reader.ReadBoolean();
+
+        for (int count = 0; count < roads.Length; count++)
+            roads[count] = reader.ReadBoolean();
     }
 };

@@ -235,5 +235,9 @@ public static class Hex
         return propThresholds[level];
     }
 
+    // Bridge Option
     public const float bridgeLengthStep = 7f;
+
+    // Save-Load Option
+    public static Color[] colors;
 }
