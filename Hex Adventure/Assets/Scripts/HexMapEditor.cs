@@ -305,6 +305,7 @@ public class HexMapEditor : MonoBehaviour
         using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create)))
         {
             // Debug.Log(Application.persistentDataPath);            
+            writer.Write(0);
             hexGrid.Save(writer);
         }
     }
@@ -314,8 +315,15 @@ public class HexMapEditor : MonoBehaviour
         string path = Path.Combine(Application.persistentDataPath, "test.map");
         using (BinaryReader reader = new BinaryReader(File.OpenRead(path)))
         {
-            // Debug.Log(reader.ReadInt32());
-            hexGrid.Load(reader);
+            int header = reader.ReadInt32();
+            if(header == 0)
+            {
+                hexGrid.Load(reader);
+            }
+            else
+            {
+                Debug.LogWarning("Unknown format " + header);
+            }
         }
     }
 }

@@ -540,43 +540,82 @@ public class HexCell : MonoBehaviour
 
     public void Save(BinaryWriter writer)
     {
-        writer.Write(_terrainTypeIndex);
-        writer.Write(elevation);
-        writer.Write(waterLevel);
-        writer.Write(_TreeLevel);
-        writer.Write(_StoneLevel);
-        writer.Write(_SpecIndex);
-
-        writer.Write(hasIncomingRiver);
-        writer.Write((int)incomingRiver);
-        writer.Write(hasOutgoingRiver);
-        writer.Write((int)outgoingRiver);
+        writer.Write((byte)_terrainTypeIndex);
+        writer.Write((byte)elevation);
+        writer.Write((byte)waterLevel);
+        writer.Write((byte)_TreeLevel);
+        writer.Write((byte)_StoneLevel);
+        writer.Write((byte)_SpecIndex);
+        
+        if(hasIncomingRiver)
+        {
+            writer.Write((byte)(incomingRiver + 128));
+        }
+        else
+        {
+            writer.Write((byte)0);
+        }
+        
+        if(hasOutgoingRiver)
+        {
+            writer.Write((byte)(outgoingRiver + 128));
+        }
+        else
+        {
+            writer.Write((byte)0);
+        }
 
         for(int count = 0; count < walls.Length; count++)
             writer.Write(walls[count]);
 
+        int roadFlags = 0;
         for (int count = 0; count < roads.Length; count++)
-            writer.Write(roads[count]);
+        {
+            if(roads[count])
+            {
+                roadFlags |= 1 << count;
+            }
+        }
+
+        writer.Write((byte)roadFlags);
     }
 
     public void Load(BinaryReader reader)
     {
-        _terrainTypeIndex = reader.ReadInt32();
-        elevation = reader.ReadInt32(); RefreshElevation();
-        waterLevel = reader.ReadInt32();
-        _TreeLevel = reader.ReadInt32();
-        _StoneLevel = reader.ReadInt32();
-        _SpecIndex = reader.ReadInt32();
+        _terrainTypeIndex = reader.ReadByte();
+        elevation = reader.ReadByte(); RefreshElevation();
+        waterLevel = reader.ReadByte();
+        _TreeLevel = reader.ReadByte();
+        _StoneLevel = reader.ReadByte();
+        _SpecIndex = reader.ReadByte();
         
-        hasIncomingRiver = reader.ReadBoolean();
-        incomingRiver = (HexDirection)reader.ReadInt32();
-        hasOutgoingRiver = reader.ReadBoolean();
-        outgoingRiver = (HexDirection)reader.ReadInt32();
+        byte riverData = reader.ReadByte();
+        if(riverData >= 128)
+        {
+            hasIncomingRiver = true;
+            incomingRiver = (HexDirection)(riverData - 128);
+        }
+        else
+        {
+            hasIncomingRiver = false;
+        }
+
+        riverData = reader.ReadByte();
+        if(riverData >= 128)
+        {
+            hasOutgoingRiver = true;
+            outgoingRiver = (HexDirection)(riverData - 128);
+        }
+        else
+        {
+            hasOutgoingRiver = false;
+        }
 
         for (int count = 0; count < walls.Length; count++)
             walls[count] = reader.ReadBoolean();
 
+        int roadFlags = reader.ReadByte();
         for (int count = 0; count < roads.Length; count++)
-            roads[count] = reader.ReadBoolean();
+            roads[count] = (roadFlags & (1 << count)) != 0;
     }
 };
