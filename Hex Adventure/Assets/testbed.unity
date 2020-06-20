@@ -473,7 +473,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: WHITE
+  m_Text: STONE
 --- !u!222 &120940061
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1113,7 +1113,7 @@ GameObject:
   - component: {fileID: 248028916}
   - component: {fileID: 248028917}
   m_Layer: 5
-  m_Name: Color 2
+  m_Name: Texture 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1592,7 +1592,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: GREEN
+  m_Text: MUD
 --- !u!222 &365048482
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1608,6 +1608,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1778818772}
     m_Modifications:
+    - target: {fileID: 1239388290195866, guid: 792b19eedb3133447899fc529c4f2b4a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4653435022556624, guid: 792b19eedb3133447899fc529c4f2b4a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 75.97177
@@ -1834,7 +1838,7 @@ GameObject:
   - component: {fileID: 478930756}
   - component: {fileID: 478930757}
   m_Layer: 5
-  m_Name: Color 1
+  m_Name: Texture 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2072,9 +2076,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'WASTELAND
-
-'
+  m_Text: SAND
 --- !u!222 &507783965
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2657,7 +2659,7 @@ GameObject:
   - component: {fileID: 598213429}
   - component: {fileID: 598213431}
   m_Layer: 5
-  m_Name: Color Panel
+  m_Name: Texture Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3062,7 +3064,7 @@ GameObject:
   - component: {fileID: 795314738}
   - component: {fileID: 795314739}
   m_Layer: 5
-  m_Name: Color 0
+  m_Name: Texture 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3648,6 +3650,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FX_TumbleWeed (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1239388290195866, guid: 792b19eedb3133447899fc529c4f2b4a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4653435022556624, guid: 792b19eedb3133447899fc529c4f2b4a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 75.97177
@@ -3820,7 +3826,7 @@ GameObject:
   - component: {fileID: 963347999}
   - component: {fileID: 963348000}
   m_Layer: 5
-  m_Name: Color 4
+  m_Name: Texture 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6104,6 +6110,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1778818772}
     m_Modifications:
+    - target: {fileID: 1656911960037552, guid: b8d603144666d554d9901541a5d92cf5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4976134823172324, guid: b8d603144666d554d9901541a5d92cf5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -752.02826
@@ -8678,7 +8688,7 @@ GameObject:
   - component: {fileID: 1811566680}
   - component: {fileID: 1811566681}
   m_Layer: 5
-  m_Name: Color 3
+  m_Name: Texture 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9113,7 +9123,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: BLUE
+  m_Text: 'GRASS '
 --- !u!222 &1864946048
 CanvasRenderer:
   m_ObjectHideFlags: 0
