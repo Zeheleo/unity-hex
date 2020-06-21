@@ -153,7 +153,7 @@ public class HexGrid : MonoBehaviour
         cellText.name = "Text " + x.ToString() + "||" + z.ToString();
         // cellText.rectTransform.SetParent(hexCanvas.transform, false);
         cellText.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
-        cellText.text = cell.hexCoordinates.ToStringOnSeperateLines();
+        // cellText.text = cell.hexCoordinates.ToStringOnSeperateLines(); CHANGE INTO DISTANCE SYSTEM
 
         cell.uiRect = cellText.rectTransform;
         cell.Elevation = 0;
@@ -204,6 +204,15 @@ public class HexGrid : MonoBehaviour
         for(int count = 0; count < chunks.Length; count++)
         {
             chunks[count].Refresh();
+        }
+    }
+
+    // Distance
+    public void FindDistanceTo(HexCell hexCell)
+    {
+        for (int count = 0; count < hexCells.Length; count++)
+        {
+            hexCells[count].Distance = hexCell.hexCoordinates.DistanceTo(hexCells[count].hexCoordinates);
         }
     }
 }

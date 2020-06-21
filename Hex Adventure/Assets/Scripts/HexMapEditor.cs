@@ -69,8 +69,11 @@ public class HexMapEditor : MonoBehaviour
                 isDrag = false;
             }
 
-            if(editToggle)
+            if (editToggle)
                 EditCells(currentCell);
+
+            else
+                hexGrid.FindDistanceTo(currentCell);
 
             previousCell = currentCell;
         }
@@ -223,10 +226,11 @@ public class HexMapEditor : MonoBehaviour
         applyElevation = toggle;
     }
 
-    public void ShowUI(bool visible)
-    {
-        hexGrid.ShowUI(visible);
-    }
+    // Helper function on HexGrid.CreateCell
+    //public void ShowUI(bool visible)
+    //{
+    //    hexGrid.ShowUI(visible);
+    //}
 
 // River Edit
     enum OptionalToggle

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI; // Text
 
 public class HexCell : MonoBehaviour
 {
@@ -617,5 +618,28 @@ public class HexCell : MonoBehaviour
         int roadFlags = reader.ReadByte();
         for (int count = 0; count < roads.Length; count++)
             roads[count] = (roadFlags & (1 << count)) != 0;
+    }
+
+// Distance Feature
+    int _distance;
+
+    private void UpdateDistanceLabel()
+    {
+        Text label = uiRect.GetComponent<Text>();
+        label.text = _distance.ToString();
+    }
+
+    public int Distance
+    {
+        get
+        {
+            return _distance;
+        }
+
+        set
+        {
+            _distance = value;
+            UpdateDistanceLabel();
+        }
     }
 };
