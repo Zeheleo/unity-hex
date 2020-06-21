@@ -16,6 +16,24 @@ public class HexMapEditor : MonoBehaviour
 
     int activeTerrainTypeIndex;
 
+    public Material terrainMaterial;
+    public void ShowGrid(bool visible)
+    {
+        if(visible)
+        {
+            terrainMaterial.EnableKeyword("GRID_ON");
+        }
+        else
+        {
+            terrainMaterial.DisableKeyword("GRID_ON");
+        }
+    }
+
+    private void Awake()
+    {
+        terrainMaterial.DisableKeyword("GRID_ON");
+    }
+
     public void SetBrushSize(float size)
     {
         brushSize = (int)size;
@@ -51,7 +69,9 @@ public class HexMapEditor : MonoBehaviour
                 isDrag = false;
             }
 
-            EditCells(currentCell);
+            if(editToggle)
+                EditCells(currentCell);
+
             previousCell = currentCell;
         }
         else
@@ -325,5 +345,13 @@ public class HexMapEditor : MonoBehaviour
                 Debug.LogWarning("Unknown format " + header);
             }
         }
+    }
+
+    private bool editToggle;
+
+    public void SetEditToggle(bool toggle)
+    {
+        editToggle = toggle;
+        hexGrid.ShowUI(!toggle);
     }
 }

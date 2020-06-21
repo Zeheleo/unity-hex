@@ -16,8 +16,6 @@ public class HexGridChunk : MonoBehaviour
     {
         gridCanvas = GetComponentInChildren<Canvas>();
         hexCells = new HexCell[Hex.chunkSizeX * Hex.chunkSizeZ];
-
-        ShowUI(false);
     }
 
     public void Refresh()
@@ -335,7 +333,7 @@ public class HexGridChunk : MonoBehaviour
         types.z = rightCell.TerrainTypeIndex;
 
         terrain.AddTriangle(begin, v4, v5);
-        terrain.AddTriangleColor(beginCell.Color, c3, c4);
+        terrain.AddTriangleColor(color1, c3, c4);
         terrain.AddTriangleTerrainTypes(types);
 
         for (int count = 2; count < Hex.terracesSteps; count++)
