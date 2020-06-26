@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using System.Collections;         // IEnumerator
+using System.Collections.Generic; // Queue
 
 public class HexGrid : MonoBehaviour
 {
@@ -196,6 +198,8 @@ public class HexGrid : MonoBehaviour
 
     public void Load(BinaryReader reader)
     {
+        StopAllCoroutines();
+
         for (int count = 0; count < hexCells.Length; count++)
         {
             hexCells[count].Load(reader);
@@ -208,11 +212,47 @@ public class HexGrid : MonoBehaviour
     }
 
     // Distance
+    IEnumerator Search(HexCell hexCell)
+    {
+        for(int count = 0; count < hexCells.Length; count++)
+        {
+            hexCells[count].Distance = int.MaxValue;
+        }
+
+        WaitForSeconds delay = new WaitForSeconds(1 / 60f);
+        Queue<HexCell> frontier = new Queue<HexCell>();
+        hexCell.Distance = 0;
+        frontier.Enqueue(hexCell);
+
+        while(frontier.Count > 0)
+        {
+            yield return delay;
+            HexCell current = frontier.Dequeue();
+            for(HexDirection dir = HexDirection.TopRight; dir <= HexDirection.TopLeft; dir++)
+            {
+                HexCell neighbor = current.GetNeighbor(dir);
+
+                if (neighbor == null || neighbor.Distance != int.MaxValue)
+                    continue;
+
+                if (neighbor.IsUnderwater)
+                    continue;
+
+                neighbor.Distance = current.Distance + 1;
+                frontier.Enqueue(neighbor);
+
+                if(neighbor != null && neighbor.Distance == int.MaxValue)
+                {
+                    neighbor.Distance = current.Distance + 1;
+                    frontier.Enqueue(neighbor);
+                }
+            }
+        }
+    }
+
     public void FindDistanceTo(HexCell hexCell)
     {
-        for (int count = 0; count < hexCells.Length; count++)
-        {
-            hexCells[count].Distance = hexCell.hexCoordinates.DistanceTo(hexCells[count].hexCoordinates);
-        }
+        StopAllCoroutines();
+        StartCoroutine(Search(hexCell));
     }
 }
