@@ -14,7 +14,7 @@ public class HexMapEditor : MonoBehaviour
     private HexDirection dragDirection;
     private HexCell previousCell;
 
-    int activeTerrainTypeIndex;
+    int activeTerrainTypeIndex = -1;
 
     public Material terrainMaterial;
     public void ShowGrid(bool visible)

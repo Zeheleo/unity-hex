@@ -672,8 +672,8 @@ public class HexGridChunk : MonoBehaviour
             TriangulateRoadSegment(mL, mC, mR, e.v2, e.v3, e.v4);
             roads.AddTriangle(center, mL, mC);
             roads.AddTriangle(center, mC, mR);
-            roads.AddTriangleUV(new Vector2(1f, 0f), new Vector2(0f, 0f), new Vector2(1f, 0f));
-            roads.AddTriangleUV(new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(0f, 0f));
+            roads.AddTriangleUV(new Vector2(2f, 0f), new Vector2(0f, 0f), new Vector2(2f, 0f));
+            roads.AddTriangleUV(new Vector2(2f, 0f), new Vector2(2f, 0f), new Vector2(0f, 0f));
         }
         else
         {
@@ -685,8 +685,8 @@ public class HexGridChunk : MonoBehaviour
     {
         roads.AddQuad(v1, v2, v4, v5);
         roads.AddQuad(v2, v3, v5, v6);
-        roads.AddQuadUV(0f, 1f, 0f, 0f);
-        roads.AddQuadUV(1f, 0f, 0f, 0f);
+        roads.AddQuadUV(0f, 2f, 0f, 0f);
+        roads.AddQuadUV(2f, 0f, 0f, 0f);
     }
 
     void TriangulateWithoutRiver(HexDirection dir, HexCell hexCell, Vector3 center, EdgeVertices e)
@@ -709,7 +709,7 @@ public class HexGridChunk : MonoBehaviour
     void TriangulateRoadEdge(Vector3 center, Vector3 mL, Vector3 mR)
     {
         roads.AddTriangle(center, mL, mR);
-        roads.AddTriangleUV(new Vector2(1f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f));
+        roads.AddTriangleUV(new Vector2(2f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f));
     }
 
     Vector2 GetRoadInterpolators(HexDirection dir, HexCell hexCell)

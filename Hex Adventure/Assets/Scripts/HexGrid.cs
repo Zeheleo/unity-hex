@@ -219,33 +219,60 @@ public class HexGrid : MonoBehaviour
             hexCells[count].Distance = int.MaxValue;
         }
 
-        WaitForSeconds delay = new WaitForSeconds(1 / 60f);
-        Queue<HexCell> frontier = new Queue<HexCell>();
-        hexCell.Distance = 0;
-        frontier.Enqueue(hexCell);
+        WaitForSeconds delay = new WaitForSeconds(1 / 360f);
 
-        while(frontier.Count > 0)
+        List<HexCell> frontier = new List<HexCell>();
+        // ListPool<HexCell>.Add(frontier);
+        
+        hexCell.Distance = 0;
+        frontier.Add(hexCell);
+
+        while (frontier.Count > 0)
         {
             yield return delay;
-            HexCell current = frontier.Dequeue();
+            HexCell current = frontier[0];
+            frontier.RemoveAt(0);
+
             for(HexDirection dir = HexDirection.TopRight; dir <= HexDirection.TopLeft; dir++)
             {
                 HexCell neighbor = current.GetNeighbor(dir);
 
-                if (neighbor == null || neighbor.Distance != int.MaxValue)
+                if (neighbor == null)
                     continue;
 
                 if (neighbor.IsUnderwater)
                     continue;
 
-                neighbor.Distance = current.Distance + 1;
-                frontier.Enqueue(neighbor);
 
-                if(neighbor != null && neighbor.Distance == int.MaxValue)
+                HexEdgeType edgeType = current.GetEdgeType(neighbor);
+                if (edgeType == HexEdgeType.Cliff)
+                    continue;
+
+                int distance = current.Distance;
+                if (current.HasRoadThroughEdge(dir))
                 {
-                    neighbor.Distance = current.Distance + 1;
-                    frontier.Enqueue(neighbor);
+                    distance += 1;
                 }
+                else if (current.HasWallThroughEdge(dir))
+                {
+                    continue;
+                }
+                else
+                {
+                    distance += (edgeType == HexEdgeType.Flat ? 2 : 4); // Non-Road
+                }
+
+                if (neighbor.Distance == int.MaxValue)
+                {
+                    neighbor.Distance = distance;
+                    frontier.Add(neighbor);
+                }
+                else if(distance < neighbor.Distance)
+                {
+                    neighbor.Distance = distance;
+                }
+
+                frontier.Sort((x, y) => x.Distance.CompareTo(y.Distance));
             }
         }
     }
