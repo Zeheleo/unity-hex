@@ -666,4 +666,20 @@ public class HexCell : MonoBehaviour
     {
         get; set;
     }
+
+
+    public int SearchHeuristic
+    {
+        get; set;
+    }
+
+    public int SearchPriority
+    {
+        get
+        {
+            return _distance + SearchHeuristic;
+        }
+    }
+
+    public HexCell NextWithSamePriority { get; set; }
 };

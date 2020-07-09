@@ -73,7 +73,7 @@ public class HexMapEditor : MonoBehaviour
             {
                 EditCells(currentCell);
             }
-            else if (Input.GetKey(KeyCode.LeftShift))
+            else if (Input.GetKey(KeyCode.LeftShift) && searchToCell != currentCell)
             {
                 if(searchFromCell)
                 {
@@ -82,10 +82,16 @@ public class HexMapEditor : MonoBehaviour
 
                 searchFromCell = currentCell;               // Update currCell
                 searchFromCell.EnableOutline(Color.blue);   // Outlining currCell with blue
+
+                if(searchToCell)
+                {
+                    hexGrid.FindPath(searchFromCell, searchToCell);
+                }
             }
             else if(searchFromCell && searchFromCell != currentCell)
             {
-                hexGrid.FindPath(searchFromCell, currentCell);
+                searchToCell = currentCell;
+                hexGrid.FindPath(searchFromCell, searchToCell);
             }   
 
             previousCell = currentCell;
