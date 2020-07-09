@@ -6,7 +6,7 @@ using System.Collections.Generic; // Queue
 
 public class HexGrid : MonoBehaviour
 {
-// Larger Map
+    // Larger Map
     public int chunkCountX = 4, chunkCountZ = 3;
     int cellCountX, cellCountZ;
     public HexGridChunk chunkPrefab;
@@ -16,7 +16,7 @@ public class HexGrid : MonoBehaviour
     public Text cellTextPrafab;
     public Texture2D noiseSource;
 
-	HexCell[] hexCells;
+    HexCell[] hexCells;
 
     public Color touchedColor = Color.gray;
 
@@ -46,9 +46,9 @@ public class HexGrid : MonoBehaviour
     void CreateChunks()
     {
         chunks = new HexGridChunk[chunkCountX * chunkCountZ];
-        for(int z =0, count =0; z < chunkCountZ; z++)
+        for (int z = 0, count = 0; z < chunkCountZ; z++)
         {
-            for(int x = 0; x < chunkCountX; x++)
+            for (int x = 0; x < chunkCountX; x++)
             {
                 HexGridChunk chunk = chunks[count++] = Instantiate(chunkPrefab);
                 chunk.transform.SetParent(transform);
@@ -57,20 +57,20 @@ public class HexGrid : MonoBehaviour
     }
 
     void CreateCells()
-    { 
+    {
         hexCells = new HexCell[cellCountX * cellCountZ];
-		for(int z = 0, count = 0; z< cellCountZ; z++)
-		{
-			for(int x = 0; x < cellCountX; x++)
-			{
-				CreateCell(x, z, count++);
-			}
-		}
-	}
+        for (int z = 0, count = 0; z < cellCountZ; z++)
+        {
+            for (int x = 0; x < cellCountX; x++)
+            {
+                CreateCell(x, z, count++);
+            }
+        }
+    }
 
     private void Update()
     {
-       if(Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))
         {
             // HandleInput();
         }
@@ -80,7 +80,7 @@ public class HexGrid : MonoBehaviour
     {
         Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if(Physics.Raycast(inputRay, out hit))
+        if (Physics.Raycast(inputRay, out hit))
         {
             // ColorCell(hit.point);
         }
@@ -98,7 +98,7 @@ public class HexGrid : MonoBehaviour
     public HexCell GetCell(HexCoordinates coordinate)
     {
         int z = coordinate.Z;
-        if(z < 0 || z >= cellCountZ)
+        if (z < 0 || z >= cellCountZ)
         {
             return null;
         }
@@ -144,7 +144,7 @@ public class HexGrid : MonoBehaviour
             else
             {
                 cell.SetNeighbor(HexDirection.DownLeft, hexCells[count - cellCountX]);
-                if(x < cellCountX - 1)
+                if (x < cellCountX - 1)
                 {
                     cell.SetNeighbor(HexDirection.DownRight, hexCells[count - cellCountX + 1]);
                 }
@@ -190,7 +190,7 @@ public class HexGrid : MonoBehaviour
     // Saves
     public void Save(BinaryWriter writer)
     {
-        for(int count = 0; count < hexCells.Length; count++)
+        for (int count = 0; count < hexCells.Length; count++)
         {
             hexCells[count].Save(writer);
         }
@@ -205,27 +205,31 @@ public class HexGrid : MonoBehaviour
             hexCells[count].Load(reader);
         }
 
-        for(int count = 0; count < chunks.Length; count++)
+        for (int count = 0; count < chunks.Length; count++)
         {
             chunks[count].Refresh();
         }
     }
 
     // Distance
-    IEnumerator Search(HexCell hexCell)
+    IEnumerator Search(HexCell fromCell, HexCell toCell)
     {
-        for(int count = 0; count < hexCells.Length; count++)
+        for (int count = 0; count < hexCells.Length; count++)
         {
             hexCells[count].Distance = int.MaxValue;
+            hexCells[count].DisableOutline();
         }
+
+        fromCell.EnableOutline(Color.blue);
+        toCell.EnableOutline(Color.red);
 
         WaitForSeconds delay = new WaitForSeconds(1 / 360f);
 
         List<HexCell> frontier = new List<HexCell>();
         // ListPool<HexCell>.Add(frontier);
-        
-        hexCell.Distance = 0;
-        frontier.Add(hexCell);
+
+        fromCell.Distance = 0;
+        frontier.Add(fromCell);
 
         while (frontier.Count > 0)
         {
@@ -233,7 +237,18 @@ public class HexGrid : MonoBehaviour
             HexCell current = frontier[0];
             frontier.RemoveAt(0);
 
-            for(HexDirection dir = HexDirection.TopRight; dir <= HexDirection.TopLeft; dir++)
+            if (current == toCell)
+            {
+                current = current.PathFrom;
+                while(current != fromCell)
+                {
+                    current.EnableOutline(Color.white);
+                    current = current.PathFrom;
+                }
+                break;
+            }
+
+            for (HexDirection dir = HexDirection.TopRight; dir <= HexDirection.TopLeft; dir++)
             {
                 HexCell neighbor = current.GetNeighbor(dir);
 
@@ -265,11 +280,13 @@ public class HexGrid : MonoBehaviour
                 if (neighbor.Distance == int.MaxValue)
                 {
                     neighbor.Distance = distance;
+                    neighbor.PathFrom = current;
                     frontier.Add(neighbor);
                 }
-                else if(distance < neighbor.Distance)
+                else if (distance < neighbor.Distance)
                 {
                     neighbor.Distance = distance;
+                    neighbor.PathFrom = current;
                 }
 
                 frontier.Sort((x, y) => x.Distance.CompareTo(y.Distance));
@@ -277,9 +294,11 @@ public class HexGrid : MonoBehaviour
         }
     }
 
-    public void FindDistanceTo(HexCell hexCell)
+    public void FindPath(HexCell fromCell, HexCell toCell)
     {
         StopAllCoroutines();
-        StartCoroutine(Search(hexCell));
+        StartCoroutine(Search(fromCell, toCell));
     }
+    
 }
+

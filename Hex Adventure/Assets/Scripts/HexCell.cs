@@ -33,6 +33,11 @@ public class HexCell : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        // Color Transition
+    }
+
     public HexCell GetNeighbor (HexDirection direction)
     {
         return neighbors[(int)direction];
@@ -641,5 +646,24 @@ public class HexCell : MonoBehaviour
             _distance = value;
             UpdateDistanceLabel();
         }
+    }
+
+// Outline feature
+    public void DisableOutline()
+    {
+        Image outline = uiRect.GetChild(0).GetComponent<Image>();
+        outline.enabled = false;
+    }
+
+    public void EnableOutline(Color color)
+    {
+        Image outline = uiRect.GetChild(0).GetComponent<Image>();
+        outline.color = color;
+        outline.enabled = true;
+    }
+
+    public HexCell PathFrom
+    {
+        get; set;
     }
 };
