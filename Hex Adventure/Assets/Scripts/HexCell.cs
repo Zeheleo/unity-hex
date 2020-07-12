@@ -634,6 +634,13 @@ public class HexCell : MonoBehaviour
         label.text = (_distance == int.MaxValue ? "" : _distance.ToString());
     }
 
+    public void SetLabel(string text)
+    {
+        UnityEngine.UI.Text label = uiRect.GetComponent<Text>();
+        label.text = text;
+    }
+
+
     public int Distance
     {
         get
@@ -644,7 +651,8 @@ public class HexCell : MonoBehaviour
         set
         {
             _distance = value;
-            UpdateDistanceLabel();
+
+            // UpdateDistanceLabel();
         }
     }
 

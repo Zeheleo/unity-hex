@@ -85,13 +85,13 @@ public class HexMapEditor : MonoBehaviour
 
                 if(searchToCell)
                 {
-                    hexGrid.FindPath(searchFromCell, searchToCell);
+                    hexGrid.FindPath(searchFromCell, searchToCell, 5); // Magic number on moves per a single turn
                 }
             }
             else if(searchFromCell && searchFromCell != currentCell)
             {
                 searchToCell = currentCell;
-                hexGrid.FindPath(searchFromCell, searchToCell);
+                hexGrid.FindPath(searchFromCell, searchToCell, 5);
             }   
 
             previousCell = currentCell;
