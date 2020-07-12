@@ -75,23 +75,29 @@ public class HexMapEditor : MonoBehaviour
             }
             else if (Input.GetKey(KeyCode.LeftShift) && searchToCell != currentCell)
             {
-                if(searchFromCell)
+                if (searchFromCell != currentCell)
                 {
-                    searchFromCell.DisableOutline();        // Remove old outline
-                }
+                    if (searchFromCell)
+                    {
+                        searchFromCell.DisableOutline();        // Remove old outline
+                    }
 
-                searchFromCell = currentCell;               // Update currCell
-                searchFromCell.EnableOutline(Color.blue);   // Outlining currCell with blue
+                    searchFromCell = currentCell;               // Update currCell
+                    searchFromCell.EnableOutline(Color.blue);   // Outlining currCell with blue
 
-                if(searchToCell)
-                {
-                    hexGrid.FindPath(searchFromCell, searchToCell, 5); // Magic number on moves per a single turn
+                    if (searchToCell)
+                    {
+                        hexGrid.FindPath(searchFromCell, searchToCell, 5); // Magic number on moves per a single turn
+                    }
                 }
             }
             else if(searchFromCell && searchFromCell != currentCell)
             {
-                searchToCell = currentCell;
-                hexGrid.FindPath(searchFromCell, searchToCell, 5);
+                if (searchFromCell != currentCell)
+                {
+                    searchToCell = currentCell;
+                    hexGrid.FindPath(searchFromCell, searchToCell, 5);
+                }
             }   
 
             previousCell = currentCell;
