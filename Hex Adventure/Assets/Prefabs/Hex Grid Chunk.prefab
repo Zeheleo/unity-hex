@@ -781,6 +781,6 @@ MonoBehaviour:
   wallDoors: {fileID: 4136298859155006, guid: 2dce7172b828e5e41b021311a05551c6, type: 3}
   bridge: {fileID: 7049233384008189953, guid: f9de2e63e9a28f040ae4f03af7816c6d, type: 3}
   specObj:
-  - {fileID: 8298739458323336113, guid: 8cfcfef9d6f75c24f9e829aaceff8ab1, type: 3}
+  - {fileID: 4681511854870854, guid: 558186cf213bb624fbd7a421e32c7f3f, type: 3}
   - {fileID: 9194058993866961134, guid: ab8bac4f6f286e349aaa0f8ec3e17ac1, type: 3}
   - {fileID: 5143215141680282272, guid: b8ccfc5eefd423f4fb1c8a532c58c3b1, type: 3}

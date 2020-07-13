@@ -256,12 +256,11 @@ public class HexFeatureManager : MonoBehaviour
 
     public void AddSpecialFeature(HexCell hexCell, Vector3 position)
     {
-        HexHash hash = Hex.SampleHashGrid(position);
+        // HexHash hash = Hex.SampleHashGrid(position);
 
         Transform instance = Instantiate(specObj[hexCell.SpecIndex - 1]);
         instance.localPosition = Hex.Perturb(position);
-        instance.localRotation = Quaternion.Euler(0f, 360f * hash.e, 0f);
-        // HexHash hash = 
+        // instance.localRotation = Quaternion.Euler(0f, 360f * hash.e, 0f);
         instance.SetParent(container, false);
     }
 }
