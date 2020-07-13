@@ -20,8 +20,8 @@ public class HexGrid : MonoBehaviour
 
     public Color touchedColor = Color.gray;
 
-    // Search Priority Queue
-    HexCellPriorityQueue searchFrontier;
+    HexCellPriorityQueue searchFrontier; // Search Priority Queue
+    int searchFrontierPhase;             // A* skip
 
     private void OnEnable()
     {
@@ -218,6 +218,8 @@ public class HexGrid : MonoBehaviour
     /*IEnumerator*/
     void Search(HexCell fromCell, HexCell toCell, int speed)
     {
+        searchFrontierPhase += 2;
+
         if(searchFrontier == null)
         {
             searchFrontier = new HexCellPriorityQueue();
@@ -229,7 +231,6 @@ public class HexGrid : MonoBehaviour
 
         for (int count = 0; count < hexCells.Length; count++)
         {
-            hexCells[count].Distance = int.MaxValue;
             hexCells[count].SetLabel(null);
             hexCells[count].DisableOutline();
         }
@@ -243,6 +244,7 @@ public class HexGrid : MonoBehaviour
         // frontier.Add(fromCell);
         // frontier.RemoveAt(0);
 
+        fromCell.SearchPhase = searchFrontierPhase;
         fromCell.Distance = 0;
         searchFrontier.Enqueue(fromCell);
 
@@ -272,7 +274,7 @@ public class HexGrid : MonoBehaviour
             {
                 HexCell neighbor = current.GetNeighbor(dir);
 
-                if (neighbor == null)
+                if (neighbor == null || neighbor.SearchPhase > searchFrontierPhase)
                     continue;
 
                 if (neighbor.IsUnderwater)
@@ -304,8 +306,9 @@ public class HexGrid : MonoBehaviour
                 if (turn > currentTurn)
                     distance = turn * speed + moveCost;
 
-                if (neighbor.Distance == int.MaxValue)
+                if(neighbor.SearchPhase < searchFrontierPhase)
                 {
+                    neighbor.SearchPhase = searchFrontierPhase;
                     neighbor.Distance = distance;
                     // neighbor.SetLabel(turn.ToString());
                     neighbor.PathFrom = current;
@@ -338,5 +341,7 @@ public class HexGrid : MonoBehaviour
         sw.Stop();
         Debug.Log(sw.ElapsedMilliseconds);
     }
+
+    
 }
 
