@@ -377,9 +377,10 @@ public class HexGrid : MonoBehaviour
         if(currentPathExists)
         {
             HexCell current = currentPathTo;
-            while(current != currentPathTo)
+            while(current != currentPathFrom)
             {
                 current.SetLabel(null);
+                // current.EnableOutline(Color.white);
                 current.DisableOutline();
                 current = current.PathFrom;
             }

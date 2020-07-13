@@ -777,10 +777,10 @@ MonoBehaviour:
     - {fileID: 4011677117134876, guid: 19781f87f568ba249b71072be6563b78, type: 3}
   - prefabs:
     - {fileID: 4985953278547462, guid: ed6525c1808d8c741907ef4fb4c408c4, type: 3}
-  walls: {fileID: 4914756270507452, guid: 0c3423c311a899743b11d305930f618f, type: 3}
+  walls: {fileID: 8909212351797056392, guid: 535f1dd506a12f34d8cc950dba3e4fc2, type: 3}
   wallDoors: {fileID: 4136298859155006, guid: 2dce7172b828e5e41b021311a05551c6, type: 3}
   bridge: {fileID: 7049233384008189953, guid: f9de2e63e9a28f040ae4f03af7816c6d, type: 3}
   specObj:
-  - {fileID: 2497239711307870216, guid: 479aab3798485264290bd5fb64bec1e3, type: 3}
-  - {fileID: 2446895570010553930, guid: 684c05b7e3ee218408e1ba19e7bc7368, type: 3}
-  - {fileID: 3223346550049729100, guid: 6df008b72454387479a69ef2b4577dd6, type: 3}
+  - {fileID: 8298739458323336113, guid: 8cfcfef9d6f75c24f9e829aaceff8ab1, type: 3}
+  - {fileID: 9194058993866961134, guid: ab8bac4f6f286e349aaa0f8ec3e17ac1, type: 3}
+  - {fileID: 5143215141680282272, guid: b8ccfc5eefd423f4fb1c8a532c58c3b1, type: 3}

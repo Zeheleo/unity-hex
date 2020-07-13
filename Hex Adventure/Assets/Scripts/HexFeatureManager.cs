@@ -111,17 +111,74 @@ public class HexFeatureManager : MonoBehaviour
 
             instance.localPosition = left;
 
-            if (dir == HexDirection.TopRight || dir == HexDirection.DownLeft)
+            //if (dir == HexDirection.TopRight || dir == HexDirection.DownLeft)
+            //{
+            //    instance.localRotation = Quaternion.Euler(0f, -66f, 0f);
+            //}
+            //else if (dir == HexDirection.Right || dir == HexDirection.Left)
+            //{
+            //    // instance.localRotation = Quaternion.Euler(0f, 90f, 0f);
+            //}
+            //else // DownRight - DownLeft
+            //{
+            //    instance.localRotation = Quaternion.Euler(0f, 66f, 0f);
+            //}
+
+            // Rotation / Position Fix
+            Vector3 localFix = Vector3.zero;
+            localFix.y = 4.72f;
+
+            if(dir == HexDirection.TopRight)
             {
-                instance.localRotation = Quaternion.Euler(0f, 25f, 0f);
+                instance.localPosition = new Vector3(
+                    instance.localPosition.x + localFix.x + 4.116f,
+                    instance.localPosition.y + localFix.y,
+                    instance.localPosition.z + localFix.z - 2.275f);
+
+                instance.localRotation = Quaternion.Euler(0f, -66f, 0f);
             }
-            else if (dir == HexDirection.Right || dir == HexDirection.Left)
+            else if (dir == HexDirection.Right)
             {
-                instance.localRotation = Quaternion.Euler(0f, 90f, 0f);
+                instance.localPosition = new Vector3(
+                   instance.localPosition.x + localFix.x,
+                   instance.localPosition.y + localFix.y,
+                   instance.localPosition.z + localFix.z - 3.75f);
             }
-            else // DownRight - DownLeft
+            else if (dir == HexDirection.DownRight)
             {
-                instance.localRotation = Quaternion.Euler(0f, 155f, 0f);
+                instance.localPosition = new Vector3(
+                   instance.localPosition.x + localFix.x - 4.79f,
+                   instance.localPosition.y + localFix.y,
+                   instance.localPosition.z + localFix.z - 2.075f);
+
+                instance.localRotation = Quaternion.Euler(0f, 66f, 0f);
+            }
+            else if (dir == HexDirection.DownLeft)
+            {
+                instance.localPosition = new Vector3(
+                    instance.localPosition.x + localFix.x + 4.116f + 0.8f,
+                    instance.localPosition.y + localFix.y,
+                    instance.localPosition.z + localFix.z - 2.275f);
+
+                instance.localRotation = Quaternion.Euler(0f, -66f + 180f, 0f);
+            }
+            else if (dir == HexDirection.Left)
+            {
+                instance.localPosition = new Vector3(
+                    instance.localPosition.x + localFix.x,
+                    instance.localPosition.y + localFix.y,
+                    instance.localPosition.z + localFix.z - 3.75f);
+
+                instance.localRotation = Quaternion.Euler(0f, 180f, 0f);
+            }
+            else // TopLeft
+            {
+                instance.localPosition = new Vector3(
+                   instance.localPosition.x + localFix.x - 4.79f+ 0.605f,
+                   instance.localPosition.y + localFix.y,
+                   instance.localPosition.z + localFix.z - 2.075f);
+
+                instance.localRotation = Quaternion.Euler(0f, 66f + 180f, 0f);
             }
 
             instance.SetParent(container, false);
@@ -199,8 +256,11 @@ public class HexFeatureManager : MonoBehaviour
 
     public void AddSpecialFeature(HexCell hexCell, Vector3 position)
     {
+        HexHash hash = Hex.SampleHashGrid(position);
+
         Transform instance = Instantiate(specObj[hexCell.SpecIndex - 1]);
         instance.localPosition = Hex.Perturb(position);
+        instance.localRotation = Quaternion.Euler(0f, 360f * hash.e, 0f);
         // HexHash hash = 
         instance.SetParent(container, false);
     }
