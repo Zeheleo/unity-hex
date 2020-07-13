@@ -202,6 +202,7 @@ public class HexGrid : MonoBehaviour
     public void Load(BinaryReader reader)
     {
         // StopAllCoroutines();
+        ClearPath();
 
         for (int count = 0; count < hexCells.Length; count++)
         {
@@ -216,7 +217,7 @@ public class HexGrid : MonoBehaviour
 
     // Distance
     /*IEnumerator*/
-    void Search(HexCell fromCell, HexCell toCell, int speed)
+    bool Search(HexCell fromCell, HexCell toCell, int speed)
     {
         searchFrontierPhase += 2;
 
@@ -229,16 +230,16 @@ public class HexGrid : MonoBehaviour
             searchFrontier.Clear();
         }
 
-        for (int count = 0; count < hexCells.Length; count++)
-        {
-            hexCells[count].SetLabel(null);
-            hexCells[count].DisableOutline();
-        }
 
-        fromCell.EnableOutline(Color.blue);
+        //for (int count = 0; count < hexCells.Length; count++)
+        //{
+        //    hexCells[count].SetLabel(null);
+        //    hexCells[count].DisableOutline();
+        //}
+        //fromCell.EnableOutline(Color.blue);
+        // -----------------------------------
         //toCell.EnableOutline(Color.red); 
         // WaitForSeconds delay = new WaitForSeconds(1 / 360f);
-
         // List<HexCell> frontier = new List<HexCell>();
         // ListPool<HexCell>.Add(frontier);
         // frontier.Add(fromCell);
@@ -256,16 +257,19 @@ public class HexGrid : MonoBehaviour
             if (current == toCell)
             {
                 // current = current.PathFrom;
-                while(current != fromCell)
-                {
-                    int turn = current.Distance / speed;
-                    current.SetLabel(turn.ToString());
 
-                    current.EnableOutline(Color.white);
-                    current = current.PathFrom;
-                }
-                toCell.EnableOutline(Color.red);
-                break;
+                //while(current != fromCell)
+                //{
+                //    int turn = current.Distance / speed;
+                //    current.SetLabel(turn.ToString());
+
+                //    current.EnableOutline(Color.white);
+                //    current = current.PathFrom;
+                //}
+                //toCell.EnableOutline(Color.red);
+                //break;
+
+                return true;
             }
 
             int currentTurn = current.Distance / speed;
@@ -323,11 +327,10 @@ public class HexGrid : MonoBehaviour
                     neighbor.PathFrom = current;
                     searchFrontier.Change(neighbor, pastPriority);
                 }
-
-                // Check twice;
-                // frontier.Sort((x, y) => x.SearchPriority.CompareTo(y.SearchPriority));
             }
         }
+
+        return false;
     }
 
     public void FindPath(HexCell fromCell, HexCell toCell, int speed)
@@ -337,11 +340,60 @@ public class HexGrid : MonoBehaviour
 
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
         sw.Start();
-        Search(fromCell, toCell, speed);
+
+        ClearPath();
+        currentPathFrom = fromCell;
+        currentPathTo = toCell;
+        currentPathExists = Search(fromCell, toCell, speed);
+        ShowPath(speed);
+
         sw.Stop();
         Debug.Log(sw.ElapsedMilliseconds);
     }
 
-    
+    HexCell currentPathFrom, currentPathTo;
+    bool currentPathExists;
+
+    void ShowPath(int speed)
+    {
+        if(currentPathExists)
+        {
+            HexCell current = currentPathTo;
+            while(current != currentPathFrom)
+            {
+                int turn = current.Distance / speed;
+                current.SetLabel(turn.ToString());
+                current.EnableOutline(Color.white);
+                current = currentPathFrom;
+            }
+        }
+
+        currentPathFrom.EnableOutline(Color.blue);
+        currentPathTo.EnableOutline(Color.red);
+    }
+
+    void ClearPath()
+    {
+        if(currentPathExists)
+        {
+            HexCell current = currentPathTo;
+            while(current != currentPathTo)
+            {
+                current.SetLabel(null);
+                current.DisableOutline();
+                current = current.PathFrom;
+            }
+
+            current.DisableOutline();
+            currentPathExists = false;
+        }
+        else if(currentPathFrom)
+        {
+            currentPathFrom.DisableOutline();
+            currentPathTo.DisableOutline();
+        }
+
+        currentPathFrom = currentPathTo = null;
+    }
 }
 
