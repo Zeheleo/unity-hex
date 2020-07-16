@@ -22,6 +22,7 @@ public class HexCell : MonoBehaviour
         if (parentChunk)
         {
             parentChunk.Refresh();
+
             for(int i = 0; i <neighbors.Length; i++)
             {
                 HexCell neighbor = neighbors[i];
@@ -29,6 +30,11 @@ public class HexCell : MonoBehaviour
                 {
                     neighbor.parentChunk.Refresh();
                 }
+            }
+
+            if(Unit)
+            {
+                Unit.ValidateLocation();
             }
         }
     }
@@ -222,6 +228,11 @@ public class HexCell : MonoBehaviour
     private void RefreshSelf()
     {
         parentChunk.Refresh();
+
+        if (Unit)
+        {
+            Unit.ValidateLocation();
+        }
     }
 
     public void SetOutgoingRiver (HexDirection dir)
@@ -691,4 +702,10 @@ public class HexCell : MonoBehaviour
 
     public HexCell NextWithSamePriority { get; set; }
     public int SearchPhase { get; set; }
+
+    // Unit
+    public HexUnit Unit
+    {
+        get; set;
+    }
 };

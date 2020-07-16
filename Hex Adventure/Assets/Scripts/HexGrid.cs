@@ -39,6 +39,8 @@ public class HexGrid : MonoBehaviour
         Hex.InitializeHashGrid(seed);
         Hex.colors = colors;
 
+        
+
         cellCountX = chunkCountX * Hex.chunkSizeX;
         cellCountZ = chunkCountZ * Hex.chunkSizeZ;
 
@@ -203,6 +205,7 @@ public class HexGrid : MonoBehaviour
     {
         // StopAllCoroutines();
         ClearPath();
+        ClearUnits();
 
         for (int count = 0; count < hexCells.Length; count++)
         {
@@ -395,6 +398,19 @@ public class HexGrid : MonoBehaviour
         }
 
         currentPathFrom = currentPathTo = null;
+    }
+
+    // Unit Tracking
+    List<HexUnit> units = new List<HexUnit>();
+
+    void ClearUnits()
+    {
+        for (int i = 0; i < units.Count; i++)
+        {
+            units[i].Die();
+        }
+
+        units.Clear();
     }
 }
 

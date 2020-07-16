@@ -17,6 +17,9 @@ public class HexMapEditor : MonoBehaviour
     int activeTerrainTypeIndex = -1;
 
     public Material terrainMaterial;
+
+    public HexUnit unitPrefab;
+
     public void ShowGrid(bool visible)
     {
         if(visible)
@@ -50,16 +53,50 @@ public class HexMapEditor : MonoBehaviour
         {
             previousCell = null;
         }
+
+        if(!EventSystem.current.IsPointerOverGameObject())
+        {
+            if(Input.GetMouseButton(0))
+            {
+                HandleInput();
+                return;
+            }
+
+            if(Input.GetKeyDown(KeyCode.U))
+            {
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    DestroyUnit();
+                }
+                else
+                {
+                    CreateUnit();
+                }
+                return;
+            }
+        }
+
+        previousCell = null;
+    }
+
+    HexCell GetCellUnderCursor()
+    {
+        Ray inputRAy = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if(Physics.Raycast(inputRAy, out hit))
+        {
+            return hexGrid.GetCell(hit.point);
+        }
+
+        return null;
     }
 
     private void HandleInput()
     {
-        Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(inputRay, out hit))
+        HexCell currentCell = GetCellUnderCursor();
+        if (currentCell)
         {
-            HexCell currentCell = hexGrid.GetCell(hit.point);
-
             if(previousCell && previousCell != currentCell)
             {
                 ValidateDrag(currentCell);
@@ -377,10 +414,32 @@ public class HexMapEditor : MonoBehaviour
     }
 
     private bool editToggle;
-
     public void SetEditToggle(bool toggle)
     {
         editToggle = toggle;
         hexGrid.ShowUI(!toggle);
+    }
+
+    // Unit
+    void CreateUnit()
+    {
+        HexCell hexCell = GetCellUnderCursor();
+        if(hexCell && !hexCell.Unit)
+        {
+            HexUnit unit = Instantiate(unitPrefab);
+            unit.transform.SetParent(hexGrid.transform, false);
+            unit.Location = hexCell;
+            unit.Rotation = Random.Range(0f, 360f);
+        }
+    }
+
+    void DestroyUnit()
+    {
+        HexCell hexCell = GetCellUnderCursor();
+        if(hexCell && hexCell.Unit)
+        {
+            // Destroy(hexCell.Unit.gameObject);
+            hexCell.Unit.Die();
+        }
     }
 }
