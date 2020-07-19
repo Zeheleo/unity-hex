@@ -6,9 +6,8 @@ using System.Collections.Generic; // Queue
 
 public class HexGrid : MonoBehaviour
 {
-    // Larger Map
-    public int chunkCountX = 4, chunkCountZ = 3;
-    int cellCountX, cellCountZ;
+    public int cellCountX = 20, cellCountZ = 15;
+    int chunkCountX, chunkCountZ;
     public HexGridChunk chunkPrefab;
     HexGridChunk[] chunks;
 
@@ -39,13 +38,38 @@ public class HexGrid : MonoBehaviour
         Hex.InitializeHashGrid(seed);
         Hex.colors = colors;
 
-        
+        CreateMap(cellCountX, cellCountZ);
+    }
 
-        cellCountX = chunkCountX * Hex.chunkSizeX;
-        cellCountZ = chunkCountZ * Hex.chunkSizeZ;
+    public bool CreateMap(int x, int z)
+    {
+        if(x <= 0 || x % Hex.chunkSizeX != 0 || 
+            z <= 0 || z % Hex.chunkSizeZ !=0)
+        {
+            Debug.LogError("Map Size Undefined!");
+            return false;
+        }
+
+        ClearPath();
+        ClearUnits();
+
+        if(chunks != null)
+        {
+            for(int i = 0; i < chunks.Length; i++)
+            {
+                Destroy(chunks[i].gameObject);
+            }
+        }
+
+        cellCountX = x;
+        cellCountZ = z;
+        chunkCountX = cellCountX / Hex.chunkSizeX;
+        chunkCountZ = cellCountZ / Hex.chunkSizeZ;
 
         CreateChunks();
         CreateCells();
+        
+        return true;
     }
 
     void CreateChunks()
@@ -195,17 +219,34 @@ public class HexGrid : MonoBehaviour
     // Saves
     public void Save(BinaryWriter writer)
     {
+        writer.Write(cellCountX);
+        writer.Write(cellCountZ);
+
         for (int count = 0; count < hexCells.Length; count++)
         {
             hexCells[count].Save(writer);
         }
     }
 
-    public void Load(BinaryReader reader)
+    public void Load(BinaryReader reader, int header)
     {
         // StopAllCoroutines();
         ClearPath();
         ClearUnits();
+
+        int x = 20, z = 15;
+        if (header >= 1)
+        {
+            x = reader.ReadInt32();
+            z = reader.ReadInt32();
+        }
+        if (x != cellCountX || z != cellCountZ)
+        {
+            if (!CreateMap(x, z))
+            {
+                return;
+            }
+        }
 
         for (int count = 0; count < hexCells.Length; count++)
         {
